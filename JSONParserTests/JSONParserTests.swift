@@ -11,13 +11,25 @@ import XCTest
 
 class JSONParserTests: XCTestCase {
     
-    func test() throws {
+    func test_Food_SingleFlat() throws {
         let data = try jsonData("Food")
         
         let parser = JSONParser.value(String.self, key: "name")
         let result = try parser.run(data)
         
         XCTAssertEqual(result, "toast")
+    }
+    
+    func test_Food_MultipleFlat() throws {
+        let data = try jsonData("Food")
+        
+        let nameParser = JSONParser.value(String.self, key: "name")
+        let pointsParser = JSONParser.value(Int.self, key: "points")
+        let name = try nameParser.run(data)
+        let points = try pointsParser.run(data)
+        
+        XCTAssertEqual(name, "toast")
+        XCTAssertEqual(points, 2)
     }
 
     func jsonData(_ fileName: String) throws -> Data {
