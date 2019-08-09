@@ -12,17 +12,21 @@ struct Parser<T> {
     let run: (Container) throws -> T
 }
 
-protocol Parsable: Decodable {
-    static var parser: Parser<Self> { get }
-}
-
-extension Parsable {
+extension Parser {
     
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: AnonymousCodingKey.self)
-        self = try Self.parser.run(container)
+    func run(_ data: Data) throws -> T {
+        let anonymousContainer = try JSONDecoder().decode(AnonymousContainer.self, from: data)
+        return try run(anonymousContainer.container)
     }
     
+}
+
+struct AnonymousContainer: Decodable {
+    let container: Container
+    
+    init(from decoder: Decoder) throws {
+        container = try decoder.container(keyedBy: AnonymousCodingKey.self)
+    }
 }
 
 func value<T: Decodable>(_ type: T.Type, key: String) -> Parser<T> {

@@ -14,6 +14,7 @@
 		E2F2FD3D22FDBEA800B06074 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2F2FD3B22FDBEA800B06074 /* LaunchScreen.storyboard */; };
 		E2F2FD4822FDBEA800B06074 /* JSONParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F2FD4722FDBEA800B06074 /* JSONParserTests.swift */; };
 		E2F2FD5322FDBEC100B06074 /* JSONParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F2FD5222FDBEC100B06074 /* JSONParser.swift */; };
+		E2F2FD5622FDD9FC00B06074 /* Food.json in Resources */ = {isa = PBXBuildFile; fileRef = E2F2FD5522FDD9FC00B06074 /* Food.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +39,7 @@
 		E2F2FD4722FDBEA800B06074 /* JSONParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONParserTests.swift; sourceTree = "<group>"; };
 		E2F2FD4922FDBEA800B06074 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E2F2FD5222FDBEC100B06074 /* JSONParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONParser.swift; sourceTree = "<group>"; };
+		E2F2FD5522FDD9FC00B06074 /* Food.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Food.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,10 +95,19 @@
 		E2F2FD4622FDBEA800B06074 /* JSONParserTests */ = {
 			isa = PBXGroup;
 			children = (
+				E2F2FD5422FDD8FC00B06074 /* JSON */,
 				E2F2FD4722FDBEA800B06074 /* JSONParserTests.swift */,
 				E2F2FD4922FDBEA800B06074 /* Info.plist */,
 			);
 			path = JSONParserTests;
+			sourceTree = "<group>";
+		};
+		E2F2FD5422FDD8FC00B06074 /* JSON */ = {
+			isa = PBXGroup;
+			children = (
+				E2F2FD5522FDD9FC00B06074 /* Food.json */,
+			);
+			path = JSON;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -190,6 +201,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E2F2FD5622FDD9FC00B06074 /* Food.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

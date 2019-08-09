@@ -10,25 +10,24 @@ import XCTest
 @testable import JSONParser
 
 class JSONParserTests: XCTestCase {
-
-    override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    
+    func test() throws {
+        let data = try jsonData("Food")
+        
+        let parser = JSONParser.value(String.self, key: "name")
+        let result = try parser.run(data)
+        
+        XCTAssertEqual(result, "toast")
     }
 
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    func jsonData(_ fileName: String) throws -> Data {
+        let bundle = Bundle.init(for: JSONParserTests.self)
+        guard let url = bundle.url(forResource: fileName, withExtension: "json") else {
+            throw "url not found; fileName: \(fileName)"
         }
+        return try Data.init(contentsOf: url)
     }
 
 }
+
+extension String: Error { }
