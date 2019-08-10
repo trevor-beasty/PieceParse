@@ -14,12 +14,21 @@ struct Food: Equatable {
     let points: Int
 }
 
+struct User: Equatable {
+    let id: String
+    let userName: String
+}
+
+let foodParser = zip(parse(String.self, key: "name"),
+                     parse(Int.self, key: "points"))
+    .map(Food.init)
+
 class JSONParserTests: XCTestCase {
     
     func test_Food_SingleFlat() throws {
         let data = try jsonData("Food")
         
-        let parser = parseValue(String.self, key: "name")
+        let parser = parse(String.self, key: "name")
         
         let result = try parser.run(data)
         XCTAssertEqual(result, "toast")
@@ -28,26 +37,33 @@ class JSONParserTests: XCTestCase {
     func test_Food_MultipleFlat() throws {
         let data = try jsonData("Food")
         
-        let parser = zip(parseValue(String.self, key: "name"),
-                         parseValue(Int.self, key: "points"))
-            .map(Food.init)
-        
-        let food = try parser.run(data)
+        let food = try foodParser.run(data)
         XCTAssertEqual(food, Food.init(name: "toast", points: 2))
     }
     
-//    func test_HeterogenousList() {
+//    func test_HeterogenousList() throws {
 //        let data = try jsonData("SearchResults")
 //
 //        let parser =
 //    }
+    
+    func test_List() throws {
+        let data = try jsonData("UniformSearchResults")
+        
+        let parser = parseMany(with: foodParser, key: "results")
+        
+        let result = try parser.run(data)
+        let food0 = Food.init(name: "banana", points: 0)
+        let food1 = Food.init(name: "hamburger", points: 8)
+        XCTAssertEqual(result, [food0, food1])
+    }
     
     func test_NestedValue() throws {
         let data = try jsonData("NestedValue")
         
         let parser = nestedContainer(key: "success")
             .chain(nestedContainer(key: "result"))
-            .chain(parseValue(Int.self, key: "value"))
+            .chain(parse(Int.self, key: "value"))
         
         let value = try parser.run(data)
         XCTAssertEqual(value, 4)
@@ -57,7 +73,7 @@ class JSONParserTests: XCTestCase {
         let data = try jsonData("NestedValue")
         
         let parser = nestedContainer(path: "success", "result")
-            .chain(parseValue(Int.self, key: "value"))
+            .chain(parse(Int.self, key: "value"))
         
         let value = try parser.run(data)
         XCTAssertEqual(value, 4)
@@ -74,8 +90,8 @@ class JSONParserTests: XCTestCase {
         
         let parser = nestedContainer(key: "success")
             .chain(
-                nestedContainer(key: "result").chain(parseValue(Int.self, key: "value")),
-                parseValue(Bool.self, key: "winner")
+                nestedContainer(key: "result").chain(parse(Int.self, key: "value")),
+                parse(Bool.self, key: "winner")
             )
             .map(Model.init)
         

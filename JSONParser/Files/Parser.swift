@@ -23,7 +23,7 @@ extension Parser {
     
 }
 
-func parseValue<A: Decodable>(_ type: A.Type, key: String) -> Parser<A> {
+func parse<A: Decodable>(_ type: A.Type, key: String) -> Parser<A> {
     return Parser { cont in
         return try cont.decode(type, forKey: .init(key))
     }
@@ -42,6 +42,31 @@ func nestedContainer(path: String...) -> Parser<Container> {
             _cont = try nestedContainer(key: key).run(_cont)
         }
         return _cont
+    }
+}
+
+enum Or<A, B> {
+    case left(A)
+    case right(B)
+}
+
+func parseHeterogenous<A, B>(_ a: Parser<A>, _ b: Parser<B>) -> Parser<Or<A, B>> {
+    return Parser<Or<A, B>> { cont in
+        if let parsedA = try? a.run(cont) { return .left(parsedA) }
+        return .right(try b.run(cont))
+    }
+}
+
+func parseMany<A>(with a: Parser<A>, key: String) -> Parser<[A]> {
+    return Parser<[A]> { cont in
+        var unkeyedCont = try cont.nestedUnkeyedContainer(forKey: .init(key))
+        var parsed = [A]()
+        while !unkeyedCont.isAtEnd {
+            let cont = try unkeyedCont.nestedContainer(keyedBy: AnonymousCodingKey.self)
+            let _parsed = try a.run(cont)
+            parsed.append(_parsed)
+        }
+        return parsed
     }
 }
 

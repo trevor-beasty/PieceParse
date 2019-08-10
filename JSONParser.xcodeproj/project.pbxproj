@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E257F37A22FEEDAB008407FA /* UniformSearchResults.json in Resources */ = {isa = PBXBuildFile; fileRef = E257F37922FEEDAB008407FA /* UniformSearchResults.json */; };
 		E2F2FD3322FDBEA700B06074 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F2FD3222FDBEA700B06074 /* AppDelegate.swift */; };
 		E2F2FD3522FDBEA700B06074 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F2FD3422FDBEA700B06074 /* ViewController.swift */; };
 		E2F2FD3822FDBEA700B06074 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2F2FD3622FDBEA700B06074 /* Main.storyboard */; };
@@ -16,7 +17,7 @@
 		E2F2FD5622FDD9FC00B06074 /* Food.json in Resources */ = {isa = PBXBuildFile; fileRef = E2F2FD5522FDD9FC00B06074 /* Food.json */; };
 		E2F2FD5922FDE23E00B06074 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F2FD5822FDE23E00B06074 /* Parser.swift */; };
 		E2F2FD5B22FDE24B00B06074 /* Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F2FD5A22FDE24B00B06074 /* Internal.swift */; };
-		E2F2FD5F22FEDAD100B06074 /* SearchResults.json in Resources */ = {isa = PBXBuildFile; fileRef = E2F2FD5E22FEDAD100B06074 /* SearchResults.json */; };
+		E2F2FD5F22FEDAD100B06074 /* MixedSearchResults.json in Resources */ = {isa = PBXBuildFile; fileRef = E2F2FD5E22FEDAD100B06074 /* MixedSearchResults.json */; };
 		E2F2FD6322FEDDB400B06074 /* NestedValue.json in Resources */ = {isa = PBXBuildFile; fileRef = E2F2FD6222FEDDB400B06074 /* NestedValue.json */; };
 /* End PBXBuildFile section */
 
@@ -31,6 +32,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E257F37922FEEDAB008407FA /* UniformSearchResults.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = UniformSearchResults.json; sourceTree = "<group>"; };
 		E2F2FD2F22FDBEA700B06074 /* JSONParser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JSONParser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2F2FD3222FDBEA700B06074 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E2F2FD3422FDBEA700B06074 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -44,7 +46,7 @@
 		E2F2FD5522FDD9FC00B06074 /* Food.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Food.json; sourceTree = "<group>"; };
 		E2F2FD5822FDE23E00B06074 /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
 		E2F2FD5A22FDE24B00B06074 /* Internal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Internal.swift; sourceTree = "<group>"; };
-		E2F2FD5E22FEDAD100B06074 /* SearchResults.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SearchResults.json; sourceTree = "<group>"; };
+		E2F2FD5E22FEDAD100B06074 /* MixedSearchResults.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = MixedSearchResults.json; sourceTree = "<group>"; };
 		E2F2FD6222FEDDB400B06074 /* NestedValue.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = NestedValue.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -112,8 +114,9 @@
 			isa = PBXGroup;
 			children = (
 				E2F2FD5522FDD9FC00B06074 /* Food.json */,
-				E2F2FD5E22FEDAD100B06074 /* SearchResults.json */,
+				E2F2FD5E22FEDAD100B06074 /* MixedSearchResults.json */,
 				E2F2FD6222FEDDB400B06074 /* NestedValue.json */,
+				E257F37922FEEDAB008407FA /* UniformSearchResults.json */,
 			);
 			path = JSON;
 			sourceTree = "<group>";
@@ -218,7 +221,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E2F2FD5F22FEDAD100B06074 /* SearchResults.json in Resources */,
+				E2F2FD5F22FEDAD100B06074 /* MixedSearchResults.json in Resources */,
+				E257F37A22FEEDAB008407FA /* UniformSearchResults.json in Resources */,
 				E2F2FD6322FEDDB400B06074 /* NestedValue.json in Resources */,
 				E2F2FD5622FDD9FC00B06074 /* Food.json in Resources */,
 			);
