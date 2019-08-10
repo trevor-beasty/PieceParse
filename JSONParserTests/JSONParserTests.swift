@@ -31,7 +31,6 @@ class JSONParserTests: XCTestCase {
         let parser = zip(parseValue(String.self, key: "name"),
                          parseValue(Int.self, key: "points"))
             .map(Food.init)
-        
         let food = try parser.run(data)
         
         XCTAssertEqual(food, Food.init(name: "toast", points: 2))
@@ -48,6 +47,16 @@ class JSONParserTests: XCTestCase {
         
         let parser = nestedContainer(key: "success")
             .chain(nestedContainer(key: "result"))
+            .chain(parseValue(Int.self, key: "value"))
+        let value = try parser.run(data)
+        
+        XCTAssertEqual(value, 4)
+    }
+    
+    func test_NestedValue_WithNestedContainerPath() throws {
+        let data = try jsonData("NestedValue")
+        
+        let parser = nestedContainer(path: "success", "result")
             .chain(parseValue(Int.self, key: "value"))
         let value = try parser.run(data)
         

@@ -35,6 +35,16 @@ func nestedContainer(key: String) -> Parser<Container> {
     }
 }
 
+func nestedContainer(path: String...) -> Parser<Container> {
+    return Parser { cont in
+        var _cont = cont
+        for key in path {
+            _cont = try nestedContainer(key: key).run(_cont)
+        }
+        return _cont
+    }
+}
+
 // MARK: - Functional
 
 extension Parser {
