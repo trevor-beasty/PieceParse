@@ -20,8 +20,8 @@ class JSONParserTests: XCTestCase {
         let data = try jsonData("Food")
         
         let parser = parseValue(String.self, key: "name")
-        let result = try parser.run(data)
         
+        let result = try parser.run(data)
         XCTAssertEqual(result, "toast")
     }
     
@@ -31,8 +31,8 @@ class JSONParserTests: XCTestCase {
         let parser = zip(parseValue(String.self, key: "name"),
                          parseValue(Int.self, key: "points"))
             .map(Food.init)
-        let food = try parser.run(data)
         
+        let food = try parser.run(data)
         XCTAssertEqual(food, Food.init(name: "toast", points: 2))
     }
     
@@ -48,8 +48,8 @@ class JSONParserTests: XCTestCase {
         let parser = nestedContainer(key: "success")
             .chain(nestedContainer(key: "result"))
             .chain(parseValue(Int.self, key: "value"))
-        let value = try parser.run(data)
         
+        let value = try parser.run(data)
         XCTAssertEqual(value, 4)
     }
     
@@ -58,9 +58,29 @@ class JSONParserTests: XCTestCase {
         
         let parser = nestedContainer(path: "success", "result")
             .chain(parseValue(Int.self, key: "value"))
-        let value = try parser.run(data)
         
+        let value = try parser.run(data)
         XCTAssertEqual(value, 4)
+    }
+    
+    func test_MultipleNested() throws {
+        
+        struct Model: Equatable {
+            let value: Int
+            let winner: Bool
+        }
+        
+        let data = try jsonData("NestedValue")
+        
+        let parser = nestedContainer(key: "success")
+            .chain(
+                nestedContainer(key: "result").chain(parseValue(Int.self, key: "value")),
+                parseValue(Bool.self, key: "winner")
+            )
+            .map(Model.init)
+        
+        let result = try parser.run(data)
+        XCTAssertEqual(result, Model.init(value: 4, winner: true))
     }
 
     func jsonData(_ fileName: String) throws -> Data {
