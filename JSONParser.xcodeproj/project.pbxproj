@@ -16,6 +16,8 @@
 		E2F2FD5622FDD9FC00B06074 /* Food.json in Resources */ = {isa = PBXBuildFile; fileRef = E2F2FD5522FDD9FC00B06074 /* Food.json */; };
 		E2F2FD5922FDE23E00B06074 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F2FD5822FDE23E00B06074 /* Parser.swift */; };
 		E2F2FD5B22FDE24B00B06074 /* Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F2FD5A22FDE24B00B06074 /* Internal.swift */; };
+		E2F2FD5F22FEDAD100B06074 /* SearchResults.json in Resources */ = {isa = PBXBuildFile; fileRef = E2F2FD5E22FEDAD100B06074 /* SearchResults.json */; };
+		E2F2FD6322FEDDB400B06074 /* NestedValue.json in Resources */ = {isa = PBXBuildFile; fileRef = E2F2FD6222FEDDB400B06074 /* NestedValue.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +44,8 @@
 		E2F2FD5522FDD9FC00B06074 /* Food.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Food.json; sourceTree = "<group>"; };
 		E2F2FD5822FDE23E00B06074 /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
 		E2F2FD5A22FDE24B00B06074 /* Internal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Internal.swift; sourceTree = "<group>"; };
+		E2F2FD5E22FEDAD100B06074 /* SearchResults.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SearchResults.json; sourceTree = "<group>"; };
+		E2F2FD6222FEDDB400B06074 /* NestedValue.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = NestedValue.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,6 +112,8 @@
 			isa = PBXGroup;
 			children = (
 				E2F2FD5522FDD9FC00B06074 /* Food.json */,
+				E2F2FD5E22FEDAD100B06074 /* SearchResults.json */,
+				E2F2FD6222FEDDB400B06074 /* NestedValue.json */,
 			);
 			path = JSON;
 			sourceTree = "<group>";
@@ -212,6 +218,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E2F2FD5F22FEDAD100B06074 /* SearchResults.json in Resources */,
+				E2F2FD6322FEDDB400B06074 /* NestedValue.json in Resources */,
 				E2F2FD5622FDD9FC00B06074 /* Food.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

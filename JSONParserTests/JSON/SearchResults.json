@@ -1,0 +1,11 @@
+{
+    "results" : [{
+        "name": "banana",
+        "points": 0,
+        "type": "FOOD"
+    }, {
+        "_id": "abc123",
+        "userName": "blob",
+        "type": "USER"
+    }]
+}

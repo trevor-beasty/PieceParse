@@ -9,6 +9,11 @@
 import XCTest
 @testable import JSONParser
 
+struct Food: Equatable {
+    let name: String
+    let points: Int
+}
+
 class JSONParserTests: XCTestCase {
     
     func test_Food_SingleFlat() throws {
@@ -21,12 +26,6 @@ class JSONParserTests: XCTestCase {
     }
     
     func test_Food_MultipleFlat() throws {
-        
-        struct Food: Equatable {
-            let name: String
-            let points: Int
-        }
-        
         let data = try jsonData("Food")
         
         let parser = zip(parseValue(String.self, key: "name"),
@@ -36,6 +35,23 @@ class JSONParserTests: XCTestCase {
         let food = try parser.run(data)
         
         XCTAssertEqual(food, Food.init(name: "toast", points: 2))
+    }
+    
+//    func test_HeterogenousList() {
+//        let data = try jsonData("SearchResults")
+//
+//        let parser =
+//    }
+    
+    func test_NestedValue() throws {
+        let data = try jsonData("NestedValue")
+        
+        let parser = nestedContainer(key: "success")
+            .chain(nestedContainer(key: "result"))
+            .chain(parseValue(Int.self, key: "value"))
+        let value = try parser.run(data)
+        
+        XCTAssertEqual(value, 4)
     }
 
     func jsonData(_ fileName: String) throws -> Data {

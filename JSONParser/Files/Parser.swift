@@ -45,6 +45,13 @@ extension Parser {
         }
     }
     
+    func chain<B>(_ b: Parser<B>) -> Parser<B> where A == Container {
+        return Parser<B> { cont in
+            let contA = try self.run(cont)
+            return try b.run(contA)
+        }
+    }
+    
 }
 
 func zip<A, B>(_ a: Parser<A>, _ b: Parser<B>) -> Parser<(A, B)> {
