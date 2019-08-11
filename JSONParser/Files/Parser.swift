@@ -12,6 +12,10 @@ struct Parser<A> {
     let run: (Container) throws -> A
 }
 
+enum JSONParserError<A>: Error {
+    case oneOfFailed(failures: [(Parser<A>, Error)], container: Container)
+}
+
 typealias Container = KeyedDecodingContainer<AnonymousCodingKey>
 
 extension Parser {
@@ -45,26 +49,29 @@ func nestedContainer(path: String...) -> Parser<Container> {
     }
 }
 
-enum Or<A, B> {
-    case left(A)
-    case right(B)
-}
-
-func parseHeterogenous<A, B>(_ a: Parser<A>, _ b: Parser<B>) -> Parser<Or<A, B>> {
-    return Parser<Or<A, B>> { cont in
-        if let parsedA = try? a.run(cont) { return .left(parsedA) }
-        return .right(try b.run(cont))
+func oneOf<A>(_ ps: [Parser<A>]) -> Parser<A> {
+    return Parser<A> { cont in
+        var failures = [(Parser<A>, Error)]()
+        for p in ps {
+            do {
+                return try p.run(cont)
+            }
+            catch let error {
+                failures.append((p, error))
+            }
+        }
+        throw JSONParserError.oneOfFailed(failures: failures, container: cont)
     }
 }
 
-func parseMany<A>(with a: Parser<A>, key: String) -> Parser<[A]> {
+func parseMany<A>(with p: Parser<A>, key: String) -> Parser<[A]> {
     return Parser<[A]> { cont in
         var unkeyedCont = try cont.nestedUnkeyedContainer(forKey: .init(key))
         var parsed = [A]()
         while !unkeyedCont.isAtEnd {
             let cont = try unkeyedCont.nestedContainer(keyedBy: AnonymousCodingKey.self)
-            let _parsed = try a.run(cont)
-            parsed.append(_parsed)
+            let a = try p.run(cont)
+            parsed.append(a)
         }
         return parsed
     }

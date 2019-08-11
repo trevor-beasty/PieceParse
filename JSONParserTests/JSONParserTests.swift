@@ -23,6 +23,10 @@ let foodParser = zip(parse(String.self, key: "name"),
                      parse(Int.self, key: "points"))
     .map(Food.init)
 
+let userParser = zip(parse(String.self, key: "_id"),
+                     parse(String.self, key: "userName"))
+    .map(User.init)
+
 class JSONParserTests: XCTestCase {
     
     func test_Food_SingleFlat() throws {
@@ -41,12 +45,6 @@ class JSONParserTests: XCTestCase {
         XCTAssertEqual(food, Food.init(name: "toast", points: 2))
     }
     
-//    func test_HeterogenousList() throws {
-//        let data = try jsonData("SearchResults")
-//
-//        let parser =
-//    }
-    
     func test_List() throws {
         let data = try jsonData("UniformSearchResults")
         
@@ -56,6 +54,25 @@ class JSONParserTests: XCTestCase {
         let food0 = Food.init(name: "banana", points: 0)
         let food1 = Food.init(name: "hamburger", points: 8)
         XCTAssertEqual(result, [food0, food1])
+    }
+    
+    func test_HeterogenousList() throws {
+        
+        enum Item: Equatable {
+            case food(Food)
+            case user(User)
+        }
+        
+        let data = try jsonData("MixedSearchResults")
+        
+        let itemParser: Parser<Item> = oneOf([foodParser.map { .food($0) },
+                                              userParser.map { .user($0) }])
+        
+        let parser = parseMany(with: itemParser, key: "results")
+        
+        let result = try parser.run(data)
+        XCTAssertEqual(result, [Item.food(.init(name: "banana", points: 0)),
+                                Item.user(.init(id: "abc123", userName: "blob"))])
     }
     
     func test_NestedValue() throws {
