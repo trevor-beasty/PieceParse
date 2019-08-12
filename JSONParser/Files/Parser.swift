@@ -89,18 +89,6 @@ func parseList<A>(with p: Parser<A>, key: String) -> Parser<[A]> {
     }
 }
 
-func parseList<A>(of type: A.Type, key: String) -> Parser<[A]> where A: Decodable {
-    return Parser<[A]> { cont in
-        var unkeyedCont = try cont.nestedUnkeyedContainer(forKey: .init(key))
-        var parsed = [A]()
-        while !unkeyedCont.isAtEnd {
-            let a = try unkeyedCont.decode(type)
-            parsed.append(a)
-        }
-        return parsed
-    }
-}
-
 func parseList<A>(at idx: Int, with p: Parser<A>, key: String) -> Parser<A> {
     return Parser<A> { cont in
         var unkeyedCont = try cont.nestedUnkeyedContainer(forKey: .init(key))

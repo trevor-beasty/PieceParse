@@ -200,7 +200,7 @@ class JSONParserTests: XCTestCase {
     func test_ParseList_WithDecodableType() throws {
         let data = try jsonData("UniformSearchResults")
         
-        let parser = parseList(of: Food.self, key: "results")
+        let parser = parse([Food].self, key: "results")
         
         let result = try parser.run(data)
         XCTAssertEqual(result, [.init(name: "banana", points: 0),
