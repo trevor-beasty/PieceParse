@@ -8,11 +8,11 @@
 
 import Foundation
 
-internal struct AnonymousContainer: Decodable {
-    let container: Container
+internal struct AnonymousDecodingContainer: Decodable {
+    let boxed: Container
     
     init(from decoder: Decoder) throws {
-        container = try decoder.container(keyedBy: AnonymousCodingKey.self)
+        boxed = try decoder.container(keyedBy: AnonymousCodingKey.self)
     }
 }
 

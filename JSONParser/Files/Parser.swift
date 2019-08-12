@@ -22,8 +22,13 @@ typealias Container = KeyedDecodingContainer<AnonymousCodingKey>
 extension Parser {
     
     func run(_ data: Data) throws -> A {
-        let anonymousContainer = try JSONDecoder().decode(AnonymousContainer.self, from: data)
-        return try run(anonymousContainer.container)
+        let cont = try JSONDecoder().decode(AnonymousDecodingContainer.self, from: data)
+        return try run(cont.boxed)
+    }
+    
+    func run(_ decoder: Decoder) throws -> A {
+        let cont = try decoder.container(keyedBy: AnonymousCodingKey.self)
+        return try run(cont)
     }
     
 }
@@ -33,6 +38,20 @@ func parse<A: Decodable>(_ type: A.Type, key: String) -> Parser<A> {
         return try cont.decode(type, forKey: .init(key))
     }
 }
+
+func parse<A: Decodable>(key: String) -> Parser<A> {
+    return Parser { cont in
+        return try cont.decode(A.self, forKey: .init(key))
+    }
+}
+
+//func decodable<A: Decodable>(_ type: A.Type) -> Parser<A> {
+//    return Parser { cont in
+//        let codingKey = cont.codingPath.last!
+//        let decoder = try cont.superDecoder(forKey: .init(codingKey.stringValue))
+//        return try A.init(from: decoder)
+//    }
+//}
 
 func nestedContainer(key: String) -> Parser<Container> {
     return Parser { cont in
@@ -75,6 +94,22 @@ func parseList<A>(with p: Parser<A>, key: String) -> Parser<[A]> {
             parsed.append(a)
         }
         return parsed
+    }
+}
+
+func parseList<A>(at idx: Int, with p: Parser<A>, key: String) -> Parser<A> {
+    return Parser<A> { cont in
+        var unkeyedCont = try cont.nestedUnkeyedContainer(forKey: .init(key))
+        var current = 0
+        while !unkeyedCont.isAtEnd {
+            let cont = try unkeyedCont.nestedContainer(keyedBy: AnonymousCodingKey.self)
+            if current != idx {
+                current += 1
+                continue
+            }
+            return try p.run(cont)
+        }
+        fatalError("bad access - index: \(idx) out of range")
     }
 }
 

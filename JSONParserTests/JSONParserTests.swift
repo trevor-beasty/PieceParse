@@ -19,6 +19,15 @@ struct User: Equatable {
     let userName: String
 }
 
+//extension User: Decodable {
+//
+//    init(from decoder: Decoder) throws {
+//        id = try parse(key: "_id").run(decoder)
+//        userName = try parse(key: "userName").run(decoder)
+//    }
+//
+//}
+
 let foodParser = zip(parse(String.self, key: "name"),
                      parse(Int.self, key: "points"))
     .map(Food.init)
@@ -184,6 +193,15 @@ class JSONParserTests: XCTestCase {
                 XCTFail()
             }
         }
+    }
+    
+    func test_ParseListAtIndex() throws {
+        let data = try jsonData("MixedSearchResults")
+        
+        let parser = parseList(at: 1, with: userParser, key: "results")
+        
+        let result = try parser.run(data)
+        XCTAssertEqual(result, .init(id: "abc123", userName: "blob"))
     }
 
     func jsonData(_ fileName: String) throws -> Data {
