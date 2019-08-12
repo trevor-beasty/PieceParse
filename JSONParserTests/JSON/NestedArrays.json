@@ -1,0 +1,21 @@
+{
+    "hits": [{
+        "state": "New Jersey",
+        "counties": [{
+            "name": "Morristown",
+            "size": 5
+        }, {
+            "name": "Bridgewater",
+            "size": 8
+        }]
+    }, {
+        "state": "New York",
+        "counties": [{
+            "name": "Brooklyn",
+            "size": 40
+        }, {
+            "name": "Manhattan",
+            "size": 100
+        }]
+    }]
+}

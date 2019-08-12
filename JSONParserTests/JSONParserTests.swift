@@ -206,6 +206,37 @@ class JSONParserTests: XCTestCase {
         XCTAssertEqual(result, [.init(name: "banana", points: 0),
                                 .init(name: "hamburger", points: 8)])
     }
+    
+    func test_NestedArrays() throws {
+
+        struct State: Equatable {
+            let name: String
+            let counties: [County]
+            
+            struct County: Equatable {
+                let name: String
+                let size: Int
+            }
+            
+        }
+        
+        let data = try jsonData("NestedArrays")
+        
+        let countyParser = zip(parse(String.self, key: "name"),
+                               parse(Int.self, key: "size"))
+            .map(State.County.init)
+        
+        let stateParser = zip(parse(String.self, key: "state"),
+                              parseList(with: countyParser, key: "counties"))
+            .map(State.init)
+        
+        let parser = parseList(with: stateParser, key: "hits")
+ 
+        let result = try parser.run(data)
+        
+        XCTAssertEqual(result, [.init(name: "New Jersey", counties: [.init(name: "Morristown", size: 5), .init(name: "Bridgewater", size: 8)]),
+                                .init(name: "New York", counties: [.init(name: "Brooklyn", size: 40), .init(name: "Manhattan", size: 100)])])
+    }
 
     func jsonData(_ fileName: String) throws -> Data {
         let bundle = Bundle.init(for: JSONParserTests.self)

@@ -20,6 +20,7 @@
 		E2F2FD5B22FDE24B00B06074 /* Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F2FD5A22FDE24B00B06074 /* Internal.swift */; };
 		E2F2FD5F22FEDAD100B06074 /* MixedSearchResults.json in Resources */ = {isa = PBXBuildFile; fileRef = E2F2FD5E22FEDAD100B06074 /* MixedSearchResults.json */; };
 		E2F2FD6322FEDDB400B06074 /* NestedValue.json in Resources */ = {isa = PBXBuildFile; fileRef = E2F2FD6222FEDDB400B06074 /* NestedValue.json */; };
+		E2FDFA5D2301D49500FE71A8 /* NestedArrays.json in Resources */ = {isa = PBXBuildFile; fileRef = E2FDFA5C2301D49500FE71A8 /* NestedArrays.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +51,7 @@
 		E2F2FD5A22FDE24B00B06074 /* Internal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Internal.swift; sourceTree = "<group>"; };
 		E2F2FD5E22FEDAD100B06074 /* MixedSearchResults.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = MixedSearchResults.json; sourceTree = "<group>"; };
 		E2F2FD6222FEDDB400B06074 /* NestedValue.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = NestedValue.json; sourceTree = "<group>"; };
+		E2FDFA5C2301D49500FE71A8 /* NestedArrays.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = NestedArrays.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +122,7 @@
 				E2F2FD6222FEDDB400B06074 /* NestedValue.json */,
 				E257F37922FEEDAB008407FA /* UniformSearchResults.json */,
 				E2CFABF02300570F006FBE86 /* StringLiteral.json */,
+				E2FDFA5C2301D49500FE71A8 /* NestedArrays.json */,
 			);
 			path = JSON;
 			sourceTree = "<group>";
@@ -226,6 +229,7 @@
 			files = (
 				E2CFABF12300570F006FBE86 /* StringLiteral.json in Resources */,
 				E2F2FD5F22FEDAD100B06074 /* MixedSearchResults.json in Resources */,
+				E2FDFA5D2301D49500FE71A8 /* NestedArrays.json in Resources */,
 				E257F37A22FEEDAB008407FA /* UniformSearchResults.json in Resources */,
 				E2F2FD6322FEDDB400B06074 /* NestedValue.json in Resources */,
 				E2F2FD5622FDD9FC00B06074 /* Food.json in Resources */,
