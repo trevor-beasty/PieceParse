@@ -152,14 +152,38 @@ class JSONParserTests: XCTestCase {
         let data = try jsonData("StringLiteral")
         
         let parser = parse([String].self, key: "values")
-            .map({
-                return $0.map {
-                    return Program.init(rawValue: $0)!
-                }
-            })
+            .map(stringLiterals(Program.init(rawValue:)))
         
         let result = try parser.run(data)
         XCTAssertEqual(result, [.programA, .programB])
+    }
+    
+    func test_StringLiteral_Failure() throws {
+        
+        enum Program: String {
+            case programA
+            case program
+        }
+        
+        let data = try jsonData("StringLiteral")
+        
+        let parser = parse([String].self, key: "values")
+            .map(stringLiterals(Program.init(rawValue:)))
+        
+        do {
+            try _ = parser.run(data)
+            XCTFail()
+        }
+        catch let err {
+            switch err {
+                
+            case ThrowingError.optionalMapFailed:
+                return
+                
+            default:
+                XCTFail()
+            }
+        }
     }
 
     func jsonData(_ fileName: String) throws -> Data {

@@ -12,8 +12,12 @@ struct Parser<A> {
     let run: (Container) throws -> A
 }
 
-enum JSONParserError<A>: Error {
+enum ParsingError<A>: Error {
     case oneOfFailed(failures: [(Parser<A>, Error)], container: Container)
+}
+
+enum ThrowingError: Error {
+    case optionalMapFailed
 }
 
 typealias Container = KeyedDecodingContainer<AnonymousCodingKey>
@@ -60,7 +64,7 @@ func oneOf<A>(_ ps: [Parser<A>]) -> Parser<A> {
                 failures.append((p, error))
             }
         }
-        throw JSONParserError.oneOfFailed(failures: failures, container: cont)
+        throw ParsingError.oneOfFailed(failures: failures, container: cont)
     }
 }
 
@@ -77,11 +81,31 @@ func parseList<A>(with p: Parser<A>, key: String) -> Parser<[A]> {
     }
 }
 
+func throwing<A, B>(_ f: @escaping (A) -> B?) -> (A) throws -> B {
+    return { a in
+        if let b = f(a) { return b }
+        throw ThrowingError.optionalMapFailed
+    }
+}
+
+func stringLiterals<A>(_ f: @escaping (String) -> A?) -> ([String]) throws -> [A] {
+    return {
+        return try $0.map(throwing(f))
+    }
+}
+
 extension Parser {
     
     func map<B>(_ f: @escaping (A) -> B) -> Parser<B> {
         return Parser<B> { cont in
             f(try self.run(cont))
+        }
+    }
+    
+    // B/c Parser throws, it seems natural to define a throwing version of map.
+    func map<B>(_ f: @escaping (A) throws -> B) -> Parser<B> {
+        return Parser<B> { cont in
+            try f(try self.run(cont))
         }
     }
     
