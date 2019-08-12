@@ -76,32 +76,36 @@ func oneOf<A>(_ ps: [Parser<A>]) -> Parser<A> {
     }
 }
 
-func parseList<A>(with p: Parser<A>, key: String) -> Parser<[A]> {
-    return Parser<[A]> { cont in
-        var unkeyedCont = try cont.nestedUnkeyedContainer(forKey: .init(key))
-        var parsed = [A]()
-        while !unkeyedCont.isAtEnd {
-            let cont = try unkeyedCont.nestedContainer(keyedBy: AnonymousCodingKey.self)
-            let a = try p.run(cont)
-            parsed.append(a)
+func parseList<A>(key: String) -> (Parser<A>) -> Parser<[A]> {
+    return { p in
+        return Parser<[A]> { cont in
+            var unkeyedCont = try cont.nestedUnkeyedContainer(forKey: .init(key))
+            var parsed = [A]()
+            while !unkeyedCont.isAtEnd {
+                let cont = try unkeyedCont.nestedContainer(keyedBy: AnonymousCodingKey.self)
+                let a = try p.run(cont)
+                parsed.append(a)
+            }
+            return parsed
         }
-        return parsed
     }
 }
 
-func parseList<A>(at idx: Int, with p: Parser<A>, key: String) -> Parser<A> {
-    return Parser<A> { cont in
-        var unkeyedCont = try cont.nestedUnkeyedContainer(forKey: .init(key))
-        var current = 0
-        while !unkeyedCont.isAtEnd {
-            let cont = try unkeyedCont.nestedContainer(keyedBy: AnonymousCodingKey.self)
-            if current != idx {
-                current += 1
-                continue
+func parseList<A>(at idx: Int, key: String) -> (Parser<A>) -> Parser<A> {
+    return { p in
+        return Parser<A> { cont in
+            var unkeyedCont = try cont.nestedUnkeyedContainer(forKey: .init(key))
+            var current = 0
+            while !unkeyedCont.isAtEnd {
+                let cont = try unkeyedCont.nestedContainer(keyedBy: AnonymousCodingKey.self)
+                if current != idx {
+                    current += 1
+                    continue
+                }
+                return try p.run(cont)
             }
-            return try p.run(cont)
+            fatalError("bad access - index: \(idx) out of range")
         }
-        fatalError("bad access - index: \(idx) out of range")
     }
 }
 
