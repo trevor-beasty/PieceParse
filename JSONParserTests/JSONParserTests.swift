@@ -152,7 +152,7 @@ class JSONParserTests: XCTestCase {
         let data = try jsonData("StringLiteral")
         
         let parser = parse([String].self, key: "values")
-            .map(stringLiterals(Program.init(rawValue:)))
+            .map(literals(Program.init(rawValue:)))
         
         let result = try parser.run(data)
         XCTAssertEqual(result, [.programA, .programB])
@@ -168,7 +168,7 @@ class JSONParserTests: XCTestCase {
         let data = try jsonData("StringLiteral")
         
         let parser = parse([String].self, key: "values")
-            .map(stringLiterals(Program.init(rawValue:)))
+            .map(literals(Program.init(rawValue:)))
         
         do {
             try _ = parser.run(data)
@@ -177,8 +177,8 @@ class JSONParserTests: XCTestCase {
         catch let err {
             switch err {
                 
-            case ThrowingError.optionalMapFailed:
-                return
+            case ParsingError<String>.literalFailed(unsupportedCase: let str):
+                XCTAssertEqual(str, "programB")
                 
             default:
                 XCTFail()

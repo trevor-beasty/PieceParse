@@ -14,10 +14,7 @@ struct Parser<A> {
 
 enum ParsingError<A>: Error {
     case oneOfFailed(failures: [(Parser<A>, Error)], container: Container)
-}
-
-enum ThrowingError: Error {
-    case optionalMapFailed
+    case literalFailed(unsupportedCase: A)
 }
 
 typealias Container = KeyedDecodingContainer<AnonymousCodingKey>
@@ -81,16 +78,16 @@ func parseList<A>(with p: Parser<A>, key: String) -> Parser<[A]> {
     }
 }
 
-func throwing<A, B>(_ f: @escaping (A) -> B?) -> (A) throws -> B {
+func literal<A, B>(_ f: @escaping (A) -> B?) -> (A) throws -> B {
     return { a in
         if let b = f(a) { return b }
-        throw ThrowingError.optionalMapFailed
+        throw ParsingError.literalFailed(unsupportedCase: a)
     }
 }
 
-func stringLiterals<A>(_ f: @escaping (String) -> A?) -> ([String]) throws -> [A] {
+func literals<A, B>(_ f: @escaping (A) -> B?) -> ([A]) throws -> [B] {
     return {
-        return try $0.map(throwing(f))
+        return try $0.map(literal(f))
     }
 }
 
