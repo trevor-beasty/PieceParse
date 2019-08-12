@@ -64,7 +64,7 @@ func oneOf<A>(_ ps: [Parser<A>]) -> Parser<A> {
     }
 }
 
-func parseMany<A>(with p: Parser<A>, key: String) -> Parser<[A]> {
+func parseList<A>(with p: Parser<A>, key: String) -> Parser<[A]> {
     return Parser<[A]> { cont in
         var unkeyedCont = try cont.nestedUnkeyedContainer(forKey: .init(key))
         var parsed = [A]()
@@ -76,8 +76,6 @@ func parseMany<A>(with p: Parser<A>, key: String) -> Parser<[A]> {
         return parsed
     }
 }
-
-// MARK: - Functional
 
 extension Parser {
     
@@ -99,7 +97,7 @@ extension Parser {
             return (try b.run(contA), try c.run(contA))
         }
     }
-    
+ 
 }
 
 func zip<A, B>(_ a: Parser<A>, _ b: Parser<B>) -> Parser<(A, B)> {

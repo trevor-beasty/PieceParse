@@ -48,7 +48,7 @@ class JSONParserTests: XCTestCase {
     func test_List() throws {
         let data = try jsonData("UniformSearchResults")
         
-        let parser = parseMany(with: foodParser, key: "results")
+        let parser = parseList(with: foodParser, key: "results")
         
         let result = try parser.run(data)
         let food0 = Food.init(name: "banana", points: 0)
@@ -68,7 +68,7 @@ class JSONParserTests: XCTestCase {
         let itemParser: Parser<Item> = oneOf([foodParser.map { .food($0) },
                                               userParser.map { .user($0) }])
         
-        let parser = parseMany(with: itemParser, key: "results")
+        let parser = parseList(with: itemParser, key: "results")
         
         let result = try parser.run(data)
         XCTAssertEqual(result, [Item.food(.init(name: "banana", points: 0)),
@@ -114,6 +114,26 @@ class JSONParserTests: XCTestCase {
         
         let result = try parser.run(data)
         XCTAssertEqual(result, Model.init(value: 4, winner: true))
+    }
+    
+    func test_StringLiteral() throws {
+        
+        enum Program: String {
+            case programA
+            case programB
+        }
+        
+        let data = try jsonData("StringLiteral")
+        
+        let parser = parse([String].self, key: "values")
+            .map({
+                return $0.map {
+                    return Program.init(rawValue: $0)!
+                }
+            })
+        
+        let result = try parser.run(data)
+        XCTAssertEqual(result, [.programA, .programB])
     }
 
     func jsonData(_ fileName: String) throws -> Data {
