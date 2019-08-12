@@ -45,14 +45,6 @@ func parse<A: Decodable>(key: String) -> Parser<A> {
     }
 }
 
-//func decodable<A: Decodable>(_ type: A.Type) -> Parser<A> {
-//    return Parser { cont in
-//        let codingKey = cont.codingPath.last!
-//        let decoder = try cont.superDecoder(forKey: .init(codingKey.stringValue))
-//        return try A.init(from: decoder)
-//    }
-//}
-
 func nestedContainer(key: String) -> Parser<Container> {
     return Parser { cont in
         return try cont.nestedContainer(keyedBy: AnonymousCodingKey.self, forKey: .init(key))
@@ -91,6 +83,18 @@ func parseList<A>(with p: Parser<A>, key: String) -> Parser<[A]> {
         while !unkeyedCont.isAtEnd {
             let cont = try unkeyedCont.nestedContainer(keyedBy: AnonymousCodingKey.self)
             let a = try p.run(cont)
+            parsed.append(a)
+        }
+        return parsed
+    }
+}
+
+func parseList<A>(of type: A.Type, key: String) -> Parser<[A]> where A: Decodable {
+    return Parser<[A]> { cont in
+        var unkeyedCont = try cont.nestedUnkeyedContainer(forKey: .init(key))
+        var parsed = [A]()
+        while !unkeyedCont.isAtEnd {
+            let a = try unkeyedCont.decode(type)
             parsed.append(a)
         }
         return parsed
