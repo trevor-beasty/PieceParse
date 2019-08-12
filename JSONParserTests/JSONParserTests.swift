@@ -50,7 +50,7 @@ class JSONParserTests: XCTestCase {
     func test_List() throws {
         let data = try jsonData("UniformSearchResults")
         
-        let parser = parseList(key: "results")(foodParser)
+        let parser = parseList(key: "results").with(foodParser)
         
         let result = try parser.run(data)
         let food0 = Food.init(name: "banana", points: 0)
@@ -70,7 +70,7 @@ class JSONParserTests: XCTestCase {
         let itemParser: Parser<Item> = oneOf([foodParser.map { .food($0) },
                                               userParser.map { .user($0) }])
         
-        let parser = parseList(key: "results")(itemParser)
+        let parser = parseList(key: "results").with(itemParser)
         
         let result = try parser.run(data)
         XCTAssertEqual(result, [Item.food(.init(name: "banana", points: 0)),
@@ -191,7 +191,7 @@ class JSONParserTests: XCTestCase {
     func test_ParseListAtIndex() throws {
         let data = try jsonData("MixedSearchResults")
         
-        let parser = parseList(at: 1, key: "results")(userParser)
+        let parser = parseList(at: 1, key: "results").with(userParser)
         
         let result = try parser.run(data)
         XCTAssertEqual(result, .init(id: "abc123", userName: "blob"))
@@ -227,10 +227,10 @@ class JSONParserTests: XCTestCase {
             .map(State.County.init)
         
         let stateParser = zip(parse(String.self, key: "state"),
-                              parseList(key: "counties")(countyParser))
+                              parseList(key: "counties").with(countyParser))
             .map(State.init)
         
-        let parser = parseList(key: "hits")(stateParser)
+        let parser = parseList(key: "hits").with(stateParser)
  
         let result = try parser.run(data)
         

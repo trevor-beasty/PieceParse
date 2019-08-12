@@ -12,6 +12,10 @@ struct Parser<A> {
     let run: (Container) throws -> A
 }
 
+struct ParserGenerator<A, B> {
+    let with: (Parser<A>) -> Parser<B>
+}
+
 enum ParsingError<A>: Error {
     case oneOfFailed(failures: [(Parser<A>, Error)], container: Container)
     case literalFailed(unsupportedCase: A)
@@ -76,8 +80,8 @@ func oneOf<A>(_ ps: [Parser<A>]) -> Parser<A> {
     }
 }
 
-func parseList<A>(key: String) -> (Parser<A>) -> Parser<[A]> {
-    return { p in
+func parseList<A>(key: String) -> ParserGenerator<A, [A]> {
+    return ParserGenerator{ p in
         return Parser<[A]> { cont in
             var unkeyedCont = try cont.nestedUnkeyedContainer(forKey: .init(key))
             var parsed = [A]()
@@ -91,8 +95,8 @@ func parseList<A>(key: String) -> (Parser<A>) -> Parser<[A]> {
     }
 }
 
-func parseList<A>(at idx: Int, key: String) -> (Parser<A>) -> Parser<A> {
-    return { p in
+func parseList<A>(at idx: Int, key: String) -> ParserGenerator<A, A> {
+    return ParserGenerator{ p in
         return Parser<A> { cont in
             var unkeyedCont = try cont.nestedUnkeyedContainer(forKey: .init(key))
             var current = 0
