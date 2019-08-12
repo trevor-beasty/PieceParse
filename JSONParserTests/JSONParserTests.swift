@@ -79,8 +79,8 @@ class JSONParserTests: XCTestCase {
         let data = try jsonData("NestedValue")
         
         let parser = nestedContainer(key: "success")
-            .chain(nestedContainer(key: "result"))
-            .chain(parse(Int.self, key: "value"))
+            .flatMap(nestedContainer(key: "result"))
+            .flatMap(parse(Int.self, key: "value"))
         
         let value = try parser.run(data)
         XCTAssertEqual(value, 4)
@@ -90,7 +90,7 @@ class JSONParserTests: XCTestCase {
         let data = try jsonData("NestedValue")
         
         let parser = nestedContainer(path: "success", "result")
-            .chain(parse(Int.self, key: "value"))
+            .flatMap(parse(Int.self, key: "value"))
         
         let value = try parser.run(data)
         XCTAssertEqual(value, 4)
@@ -106,13 +106,39 @@ class JSONParserTests: XCTestCase {
         let data = try jsonData("NestedValue")
         
         let parser = nestedContainer(key: "success")
-            .chain(
-                nestedContainer(key: "result").chain(parse(Int.self, key: "value")),
+            .flatMap(
+                nestedContainer(key: "result").flatMap(parse(Int.self, key: "value")),
                 parse(Bool.self, key: "winner")
             )
             .map(Model.init)
         
         let result = try parser.run(data)
+        XCTAssertEqual(result, Model.init(value: 4, winner: true))
+    }
+    
+    // This is a style more similar to how the 'keyed container' api operates.
+    // The idea here is that plural flatMaps (BC, BCD, etc) may be unneeded.
+    func test_MultipleNested_WithoutPluralFlatMap() throws {
+        // given
+        struct Model: Equatable {
+            let value: Int
+            let winner: Bool
+        }
+        
+        let data = try jsonData("NestedValue")
+        
+        // when
+        let successCont = try nestedContainer(key: "success").run(data)
+        
+        let value = try nestedContainer(key: "result")
+            .flatMap(parse(Int.self, key: "value"))
+            .run(successCont)
+        
+        let winner = try parse(Bool.self, key: "winner").run(successCont)
+        
+        let result = Model.init(value: value, winner: winner)
+        
+        // then
         XCTAssertEqual(result, Model.init(value: 4, winner: true))
     }
     

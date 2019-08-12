@@ -85,13 +85,13 @@ extension Parser {
         }
     }
     
-    func chain<B>(_ b: Parser<B>) -> Parser<B> where A == Container {
+    func flatMap<B>(_ b: Parser<B>) -> Parser<B> where A == Container {
         return Parser<B> { cont in
             try b.run(try self.run(cont))
         }
     }
     
-    func chain<B, C>(_ b: Parser<B>, _ c: Parser<C>) -> Parser<(B, C)> where A == Container {
+    func flatMap<B, C>(_ b: Parser<B>, _ c: Parser<C>) -> Parser<(B, C)> where A == Container {
         return Parser<(B, C)> { cont in
             let contA = try self.run(cont)
             return (try b.run(contA), try c.run(contA))
