@@ -237,6 +237,30 @@ class JSONParserTests: XCTestCase {
         XCTAssertEqual(result, [.init(name: "New Jersey", counties: [.init(name: "Morristown", size: 5), .init(name: "Bridgewater", size: 8)]),
                                 .init(name: "New York", counties: [.init(name: "Brooklyn", size: 40), .init(name: "Manhattan", size: 100)])])
     }
+    
+    func test_CustomClosureStyle() throws {
+        
+        struct Model: Equatable {
+            let name: String
+            let height: Int
+            let weight: Int
+            let favoriteColor: String
+        }
+        
+        let data = try jsonData("DetailedObject")
+        
+        let parser = Parser<Model> { cont in
+            return Model.init(
+                name: try cont.parse("_name"),
+                height: try cont.parse("heightInM"),
+                weight: try cont.parse("weightInKg"),
+                favoriteColor: try cont.parse("favoriteColor")
+            )
+        }
+        
+        let result = try parser.run(data)
+        XCTAssertEqual(result, Model.init(name: "Blob", height: 2, weight: 78, favoriteColor: "red"))
+    }
 
     func jsonData(_ fileName: String) throws -> Data {
         let bundle = Bundle.init(for: JSONParserTests.self)

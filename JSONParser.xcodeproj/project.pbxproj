@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E22213FD2302D9BC005DAE3A /* DetailedObject.json in Resources */ = {isa = PBXBuildFile; fileRef = E22213FC2302D9BC005DAE3A /* DetailedObject.json */; };
 		E257F37A22FEEDAB008407FA /* UniformSearchResults.json in Resources */ = {isa = PBXBuildFile; fileRef = E257F37922FEEDAB008407FA /* UniformSearchResults.json */; };
 		E2CFABF12300570F006FBE86 /* StringLiteral.json in Resources */ = {isa = PBXBuildFile; fileRef = E2CFABF02300570F006FBE86 /* StringLiteral.json */; };
 		E2F2FD3322FDBEA700B06074 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F2FD3222FDBEA700B06074 /* AppDelegate.swift */; };
@@ -34,6 +35,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E22213FC2302D9BC005DAE3A /* DetailedObject.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = DetailedObject.json; sourceTree = "<group>"; };
 		E257F37922FEEDAB008407FA /* UniformSearchResults.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = UniformSearchResults.json; sourceTree = "<group>"; };
 		E2CFABF02300570F006FBE86 /* StringLiteral.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = StringLiteral.json; sourceTree = "<group>"; };
 		E2F2FD2F22FDBEA700B06074 /* JSONParser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JSONParser.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -123,6 +125,7 @@
 				E257F37922FEEDAB008407FA /* UniformSearchResults.json */,
 				E2CFABF02300570F006FBE86 /* StringLiteral.json */,
 				E2FDFA5C2301D49500FE71A8 /* NestedArrays.json */,
+				E22213FC2302D9BC005DAE3A /* DetailedObject.json */,
 			);
 			path = JSON;
 			sourceTree = "<group>";
@@ -232,6 +235,7 @@
 				E2FDFA5D2301D49500FE71A8 /* NestedArrays.json in Resources */,
 				E257F37A22FEEDAB008407FA /* UniformSearchResults.json in Resources */,
 				E2F2FD6322FEDDB400B06074 /* NestedValue.json in Resources */,
+				E22213FD2302D9BC005DAE3A /* DetailedObject.json in Resources */,
 				E2F2FD5622FDD9FC00B06074 /* Food.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

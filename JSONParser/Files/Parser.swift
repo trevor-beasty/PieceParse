@@ -23,6 +23,18 @@ enum ParsingError<A>: Error {
 
 typealias Container = KeyedDecodingContainer<AnonymousCodingKey>
 
+extension KeyedDecodingContainer where Key == AnonymousCodingKey {
+    
+    func parse<T: Decodable>(_ type: T.Type, key: String) throws -> T {
+        return try decode(type, forKey: .init(key))
+    }
+    
+    func parse<T: Decodable>(_ key: String) throws -> T {
+        return try decode(T.self, forKey: .init(key))
+    }
+    
+}
+
 extension Parser {
     
     func run(_ data: Data) throws -> A {
@@ -39,13 +51,7 @@ extension Parser {
 
 func parse<A: Decodable>(_ type: A.Type, key: String) -> Parser<A> {
     return Parser { cont in
-        return try cont.decode(type, forKey: .init(key))
-    }
-}
-
-func parse<A: Decodable>(key: String) -> Parser<A> {
-    return Parser { cont in
-        return try cont.decode(A.self, forKey: .init(key))
+        return try cont.parse(type, key: key)
     }
 }
 
@@ -162,4 +168,20 @@ func zip<A, B>(_ a: Parser<A>, _ b: Parser<B>) -> Parser<(A, B)> {
         let parsedB = try b.run(cont)
         return (parsedA, parsedB)
     }
+}
+
+extension ParserGenerator {
+    
+    func map<C>(_ f: @escaping (B) -> C) -> ParserGenerator<A, C> {
+        return ParserGenerator<A, C> { p in
+            return self.with(p).map(f)
+        }
+    }
+    
+    func flatMap<C>(_ pc: Parser<C>) -> ParserGenerator<A, C> where B == Container {
+        return ParserGenerator<A, C> { pa in
+            return self.with(pa).flatMap(pc)
+        }
+    }
+    
 }
